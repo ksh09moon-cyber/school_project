@@ -1,43 +1,39 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>나만의 스마트 옷장</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .slide-up { animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; background-color: white; box-shadow: 0 0 40px rgba(0,0,0,0.08); position: relative; overflow-x: hidden; }
-        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/app.css">
 </head>
+
 <body class="text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-900">
     <div class="app-container flex flex-col h-screen">
 
         <!-- [화면 1] 시작 화면 (닉네임 및 API Key) -->
-        <div id="auth-screen" class="flex-1 flex flex-col justify-center px-8 relative z-10 fade-in bg-gradient-to-b from-indigo-50/50 via-white to-white">
+        <div id="auth-screen"
+            class="flex-1 flex flex-col justify-center px-8 relative z-10 fade-in bg-gradient-to-b from-indigo-50/50 via-white to-white">
             <div class="text-center mb-10 slide-up">
-                <div class="w-24 h-24 bg-white rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-indigo-100/50 border border-slate-50">
+                <div
+                    class="w-24 h-24 bg-white rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-indigo-100/50 border border-slate-50">
                     <i class="fa-solid fa-shirt text-5xl text-indigo-500 bg-indigo-50 p-4 rounded-2xl"></i>
                 </div>
                 <h1 class="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">스마트 옷장</h1>
                 <p class="text-slate-500 text-sm font-medium">내 손안의 AI 스타일리스트</p>
             </div>
-            
-            <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 slide-up" style="animation-delay: 0.1s;">
+
+            <div class="bg-white p-6 rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 slide-up"
+                style="animation-delay: 0.1s;">
                 <h2 class="text-xl font-bold text-slate-800 mb-2">환영합니다!</h2>
                 <p class="text-sm text-slate-500 mb-6">사용하실 닉네임과 Gemini API 키를 입력해주세요.</p>
-                
+
                 <form id="nickname-form" class="space-y-4">
                     <div>
                         <input type="text" id="nickname-input" placeholder="닉네임 (예: 패션피플)" required
@@ -46,8 +42,10 @@
                             class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-medium placeholder:text-slate-400">
                         <p class="text-[11px] text-slate-400 mt-2 px-1 font-bold">※ 키가 없어도 하이브리드 로컬 스마트 엔진이 작동합니다.</p>
                     </div>
-                    <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition-colors shadow-lg shadow-slate-200 flex justify-center items-center gap-2 group">
-                        <span>옷장 열기</span> <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    <button type="submit"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition-colors shadow-lg shadow-slate-200 flex justify-center items-center gap-2 group">
+                        <span>옷장 열기</span> <i
+                            class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                     </button>
                 </form>
             </div>
@@ -55,27 +53,34 @@
 
         <!-- [화면 2] 메인 앱 화면 -->
         <div id="main-screen" class="hidden flex-col h-full bg-slate-50 fade-in">
-            <header class="bg-white px-6 py-4 flex justify-between items-center sticky top-0 z-20 shadow-sm border-b border-slate-100">
+            <header
+                class="bg-white px-6 py-4 flex justify-between items-center sticky top-0 z-20 shadow-sm border-b border-slate-100">
                 <div>
                     <h1 id="user-title" class="text-xl font-extrabold text-slate-800 tracking-tight">나만의 옷장</h1>
                     <p class="text-[11px] text-slate-400 font-bold mt-0.5 tracking-wide">AI FASHION ASSISTANT</p>
                 </div>
                 <div class="flex gap-2">
-                    <button id="btn-add" class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center hover:bg-indigo-100 transition shadow-sm" title="옷 추가하기">
+                    <button id="btn-add"
+                        class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center hover:bg-indigo-100 transition shadow-sm"
+                        title="옷 추가하기">
                         <i class="fa-solid fa-plus text-lg"></i>
                     </button>
-                    <button id="btn-logout" class="w-10 h-10 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-100 transition" title="닉네임 변경">
+                    <button id="btn-logout"
+                        class="w-10 h-10 bg-slate-50 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-100 transition"
+                        title="닉네임 변경">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
             </header>
 
             <main class="flex-1 overflow-y-auto hide-scrollbar pb-28">
-                
+
                 <!-- [탭 1] 내 옷장 -->
                 <div id="view-closet" class="tab-content p-6 slide-up">
                     <div class="flex justify-between items-end mb-6">
-                        <h2 class="text-lg font-bold text-slate-800">카테고리별 컬렉션 <span id="item-count" class="text-indigo-500 text-sm ml-1 bg-indigo-50 px-2 py-0.5 rounded-full font-bold">0</span></h2>
+                        <h2 class="text-lg font-bold text-slate-800">카테고리별 컬렉션 <span id="item-count"
+                                class="text-indigo-500 text-sm ml-1 bg-indigo-50 px-2 py-0.5 rounded-full font-bold">0</span>
+                        </h2>
                     </div>
                     <div id="closet-category-sections" class="space-y-8">
                         <!-- 동적 렌더링 -->
@@ -85,20 +90,27 @@
                 <!-- [탭 2] 코디 평가 -->
                 <div id="view-rate" class="tab-content p-6 hidden slide-up">
                     <h2 class="text-lg font-bold text-slate-800 mb-1">느좋 패션 테스트</h2>
-                    <p class="text-sm text-slate-500 mb-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm">각 카테고리별로 아이템을 <strong>최대 1개씩</strong> 선택해주세요. <br>(<span class="text-pink-500 font-bold">상의와 하의는 필수</span>입니다)</p>
-                    
+                    <p class="text-sm text-slate-500 mb-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm">각
+                        카테고리별로 아이템을 <strong>최대 1개씩</strong> 선택해주세요. <br>(<span class="text-pink-500 font-bold">상의와 하의는
+                            필수</span>입니다)</p>
+
                     <div id="rate-item-list" class="space-y-5 mb-6 max-h-[60vh] overflow-y-auto hide-scrollbar">
                         <!-- 동적 렌더링 -->
                     </div>
-                    
-                    <button id="btn-get-rate" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition shadow-xl shadow-slate-200/50 flex items-center justify-center gap-2">
+
+                    <button id="btn-get-rate"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition shadow-xl shadow-slate-200/50 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-wand-magic-sparkles text-pink-400"></i> 심층 스타일 분석받기
                     </button>
-                    
+
                     <div id="rate-result-container" class="mt-8 hidden slide-up pb-4">
-                        <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-pink-500"></i> 패션 분석 리포트</h3>
-                        <div id="rate-result" class="bg-white p-5 rounded-3xl border border-pink-100 shadow-lg shadow-pink-100/30 space-y-4"></div>
-                        <button id="btn-share-coord" class="mt-4 w-full bg-white border-2 border-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-slate-50 transition flex items-center justify-center gap-2 shadow-sm">
+                        <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><i
+                                class="fa-solid fa-chart-pie text-pink-500"></i> 패션 분석 리포트</h3>
+                        <div id="rate-result"
+                            class="bg-white p-5 rounded-3xl border border-pink-100 shadow-lg shadow-pink-100/30 space-y-4">
+                        </div>
+                        <button id="btn-share-coord"
+                            class="mt-4 w-full bg-white border-2 border-slate-200 text-slate-700 font-bold py-3.5 rounded-2xl hover:bg-slate-50 transition flex items-center justify-center gap-2 shadow-sm">
                             <i class="fa-solid fa-share-nodes text-slate-400"></i> 내 코디 자랑하기 (복사)
                         </button>
                     </div>
@@ -107,56 +119,80 @@
                 <!-- [탭 3] 코디 추천 -->
                 <div id="view-rec" class="tab-content p-6 hidden slide-up">
                     <h2 class="text-lg font-bold text-slate-800 mb-1">룩핏 맞춤 추천</h2>
-                    <p class="text-sm text-slate-500 mb-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm">현재 날씨와 약속을 입력하시면 옷장 속 아이템을 활용해 최적의 코디를 제안합니다.</p>
-                    
+                    <p class="text-sm text-slate-500 mb-4 bg-white p-3 rounded-xl border border-slate-100 shadow-sm">현재
+                        날씨와 약속을 입력하시면 옷장 속 아이템을 활용해 최적의 코디를 제안합니다.</p>
+
                     <div class="space-y-3 mb-6">
-                        <div class="bg-white p-2.5 rounded-2xl border border-slate-200 flex items-center shadow-sm focus-within:ring-2 focus-within:ring-indigo-100 transition-shadow">
-                            <div class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center mr-3">
+                        <div
+                            class="bg-white p-2.5 rounded-2xl border border-slate-200 flex items-center shadow-sm focus-within:ring-2 focus-within:ring-indigo-100 transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center mr-3">
                                 <i class="fa-solid fa-cloud-sun text-lg"></i>
                             </div>
-                            <input type="text" id="rec-weather" placeholder="날씨 (예: 맑음, 비, 폭염, 한파)" class="flex-1 bg-transparent text-sm focus:outline-none font-medium placeholder:text-slate-300">
+                            <input type="text" id="rec-weather" placeholder="날씨 (예: 맑음, 비, 폭염, 한파)"
+                                class="flex-1 bg-transparent text-sm focus:outline-none font-medium placeholder:text-slate-300">
                         </div>
-                        <div class="bg-white p-2.5 rounded-2xl border border-slate-200 flex items-center shadow-sm focus-within:ring-2 focus-within:ring-emerald-100 transition-shadow">
-                            <div class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center mr-3">
+                        <div
+                            class="bg-white p-2.5 rounded-2xl border border-slate-200 flex items-center shadow-sm focus-within:ring-2 focus-within:ring-emerald-100 transition-shadow">
+                            <div
+                                class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center mr-3">
                                 <i class="fa-solid fa-calendar-check text-lg"></i>
                             </div>
-                            <input type="text" id="rec-occasion" placeholder="약속 (예: 데이트, 출근, 캠핑)" class="flex-1 bg-transparent text-sm focus:outline-none font-medium placeholder:text-slate-300">
+                            <input type="text" id="rec-occasion" placeholder="약속 (예: 데이트, 출근, 캠핑)"
+                                class="flex-1 bg-transparent text-sm focus:outline-none font-medium placeholder:text-slate-300">
                         </div>
                     </div>
-                    
-                    <button id="btn-get-rec" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl transition shadow-xl shadow-indigo-200/50 flex items-center justify-center gap-2">
+
+                    <button id="btn-get-rec"
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl transition shadow-xl shadow-indigo-200/50 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-sparkles text-indigo-200"></i> 룩핏 스타일 추천받기
                     </button>
-                    
+
                     <div id="rec-result-container" class="mt-8 hidden slide-up pb-4">
-                        <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-indigo-500"></i> 오늘의 추천 조합</h3>
-                        <div id="rec-result" class="bg-white p-5 rounded-3xl border border-indigo-100 shadow-lg shadow-indigo-100/30 space-y-4"></div>
+                        <h3 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><i
+                                class="fa-solid fa-lightbulb text-indigo-500"></i> 오늘의 추천 조합</h3>
+                        <div id="rec-result"
+                            class="bg-white p-5 rounded-3xl border border-indigo-100 shadow-lg shadow-indigo-100/30 space-y-4">
+                        </div>
                     </div>
                 </div>
             </main>
 
-            <nav class="bg-white/80 backdrop-blur-md border-t border-slate-100 px-6 py-4 flex justify-around items-center fixed bottom-0 w-full max-w-[480px] z-20 pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
-                <button class="nav-tab flex flex-col items-center gap-1.5 text-indigo-600 transition" data-target="view-closet">
-                    <div class="w-12 h-8 flex items-center justify-center rounded-full bg-indigo-50 nav-indicator transition-colors"><i class="fa-solid fa-door-open text-xl"></i></div>
+            <nav
+                class="bg-white/80 backdrop-blur-md border-t border-slate-100 px-6 py-4 flex justify-around items-center fixed bottom-0 w-full max-w-[480px] z-20 pb-safe shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
+                <button class="nav-tab flex flex-col items-center gap-1.5 text-indigo-600 transition"
+                    data-target="view-closet">
+                    <div
+                        class="w-12 h-8 flex items-center justify-center rounded-full bg-indigo-50 nav-indicator transition-colors">
+                        <i class="fa-solid fa-door-open text-xl"></i></div>
                     <span class="text-[10px] font-extrabold tracking-wide">내 옷장</span>
                 </button>
-                <button class="nav-tab flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-600 transition" data-target="view-rate">
-                    <div class="w-12 h-8 flex items-center justify-center rounded-full nav-indicator transition-colors"><i class="fa-solid fa-star-half-stroke text-xl"></i></div>
+                <button
+                    class="nav-tab flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-600 transition"
+                    data-target="view-rate">
+                    <div class="w-12 h-8 flex items-center justify-center rounded-full nav-indicator transition-colors">
+                        <i class="fa-solid fa-star-half-stroke text-xl"></i></div>
                     <span class="text-[10px] font-extrabold tracking-wide">코디 평가</span>
                 </button>
-                <button class="nav-tab flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-600 transition" data-target="view-rec">
-                    <div class="w-12 h-8 flex items-center justify-center rounded-full nav-indicator transition-colors"><i class="fa-solid fa-compass text-xl"></i></div>
+                <button
+                    class="nav-tab flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-600 transition"
+                    data-target="view-rec">
+                    <div class="w-12 h-8 flex items-center justify-center rounded-full nav-indicator transition-colors">
+                        <i class="fa-solid fa-compass text-xl"></i></div>
                     <span class="text-[10px] font-extrabold tracking-wide">맞춤 추천</span>
                 </button>
             </nav>
         </div>
 
         <!-- [모달] 의류 등록 창 (직접 입력 + 사진 업로드 하이브리드) -->
-        <div id="modal-add" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center fade-in backdrop-blur-sm">
-            <div class="bg-white w-full max-w-[480px] sm:w-[90%] sm:rounded-[2rem] rounded-t-[2rem] p-6 shadow-2xl transform transition-transform slide-up max-h-[90vh] overflow-y-auto hide-scrollbar">
+        <div id="modal-add"
+            class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-end sm:items-center justify-center fade-in backdrop-blur-sm">
+            <div
+                class="bg-white w-full max-w-[480px] sm:w-[90%] sm:rounded-[2rem] rounded-t-[2rem] p-6 shadow-2xl transform transition-transform slide-up max-h-[90vh] overflow-y-auto hide-scrollbar">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-extrabold text-slate-800">새 의류 등록</h3>
-                    <button id="btn-close-add" class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
+                    <button id="btn-close-add"
+                        class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 transition">
                         <i class="fa-solid fa-xmark text-lg"></i>
                     </button>
                 </div>
@@ -169,7 +205,8 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-2 ml-1">2. 카테고리 직접 선택 (선택)</label>
-                        <select id="item-category-select" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700">
+                        <select id="item-category-select"
+                            class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700">
                             <option value="">🤖 AI 자동 판단 (지정 안 함)</option>
                             <option value="상의">상의 (티셔츠, 셔츠, 니트, 가디건 등)</option>
                             <option value="하의">하의 (청바지, 팬츠, 슬랙스, 스커트 등)</option>
@@ -178,7 +215,7 @@
                             <option value="신발">신발 (운동화, 구두, 스니커즈, 부츠 등)</option>
                         </select>
                     </div>
-                    
+
                     <div class="flex items-center gap-3 my-2">
                         <div class="h-px bg-slate-200 flex-1"></div>
                         <span class="text-xs text-slate-400 font-bold">또는 사진 업로드 (스마트 비전)</span>
@@ -186,15 +223,19 @@
                     </div>
 
                     <div>
-                        <div class="relative border-2 border-dashed border-indigo-200 bg-indigo-50/50 rounded-2xl p-4 text-center hover:bg-indigo-50 transition cursor-pointer">
-                            <input type="file" id="item-image-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div
+                            class="relative border-2 border-dashed border-indigo-200 bg-indigo-50/50 rounded-2xl p-4 text-center hover:bg-indigo-50 transition cursor-pointer">
+                            <input type="file" id="item-image-file" accept="image/*"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
                             <i class="fa-solid fa-image text-2xl text-indigo-400 mb-1"></i>
                             <p class="text-xs text-indigo-700 font-bold">사진 선택 또는 촬영</p>
-                            <p id="file-name-display" class="text-[11px] text-indigo-400 mt-1 truncate max-w-xs mx-auto">선택된 파일 없음</p>
+                            <p id="file-name-display"
+                                class="text-[11px] text-indigo-400 mt-1 truncate max-w-xs mx-auto">선택된 파일 없음</p>
                         </div>
                     </div>
 
-                    <button type="submit" id="btn-submit-add" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition mt-2 shadow-xl shadow-slate-200/50 text-base">
+                    <button type="submit" id="btn-submit-add"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition mt-2 shadow-xl shadow-slate-200/50 text-base">
                         <i class="fa-solid fa-robot mr-1 text-slate-300"></i> 의류 등록 완료하기
                     </button>
                 </form>
@@ -202,661 +243,44 @@
         </div>
 
         <!-- [모달] 상세 보기 창 -->
-        <div id="modal-detail" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 fade-in backdrop-blur-sm">
+        <div id="modal-detail"
+            class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 fade-in backdrop-blur-sm">
             <div class="bg-white w-full max-w-[400px] rounded-[2rem] p-6 shadow-2xl relative slide-up">
-                <button id="btn-close-detail" class="absolute top-5 right-5 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 transition z-10">
+                <button id="btn-close-detail"
+                    class="absolute top-5 right-5 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 transition z-10">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
                 <div id="detail-content" class="mt-2"></div>
             </div>
         </div>
-        
+
         <!-- [모달] 확인 창 -->
-        <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/70 z-[60] flex items-center justify-center p-4 fade-in backdrop-blur-sm">
+        <div id="modal-confirm"
+            class="hidden fixed inset-0 bg-slate-900/70 z-[60] flex items-center justify-center p-4 fade-in backdrop-blur-sm">
             <div class="bg-white w-full max-w-[320px] rounded-[2rem] p-6 text-center shadow-2xl slide-up">
-                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <div
+                    class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
                     <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
                 <h3 id="confirm-title" class="text-lg font-bold text-slate-800 mb-2">삭제하시겠습니까?</h3>
                 <p id="confirm-desc" class="text-sm text-slate-500 mb-6 font-medium">이 작업은 되돌릴 수 없습니다.</p>
                 <div class="flex gap-3">
-                    <button id="btn-confirm-cancel" class="flex-1 bg-slate-100 text-slate-700 font-bold py-3.5 rounded-xl hover:bg-slate-200 transition">취소</button>
-                    <button id="btn-confirm-ok" class="flex-1 bg-red-500 text-white font-bold py-3.5 rounded-xl hover:bg-red-600 transition shadow-lg shadow-red-200/50">삭제하기</button>
+                    <button id="btn-confirm-cancel"
+                        class="flex-1 bg-slate-100 text-slate-700 font-bold py-3.5 rounded-xl hover:bg-slate-200 transition">취소</button>
+                    <button id="btn-confirm-ok"
+                        class="flex-1 bg-red-500 text-white font-bold py-3.5 rounded-xl hover:bg-red-600 transition shadow-lg shadow-red-200/50">삭제하기</button>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <script>
-        let currentUser = localStorage.getItem('closet_nickname') || null;
-        let apiKey = localStorage.getItem('closet_api_key') || null;
-        let clothingItems = JSON.parse(localStorage.getItem('closet_items')) || [];
-        let confirmAction = null;
-
-        function showMessage(msg, type = 'info') {
-            const toast = document.createElement('div');
-            let bgClass = 'bg-slate-900 border-slate-800';
-            let iconHtml = '<i class="fa-solid fa-bell text-slate-300"></i>';
-            if(type === 'error') { bgClass = 'bg-red-500 border-red-600'; iconHtml = '<i class="fa-solid fa-circle-exclamation text-red-100"></i>'; }
-            if(type === 'success') { bgClass = 'bg-emerald-500 border-emerald-600'; iconHtml = '<i class="fa-solid fa-circle-check text-emerald-100"></i>'; }
-            
-            toast.className = `fixed bottom-24 left-1/2 transform -translate-x-1/2 px-5 py-3.5 rounded-2xl text-white text-sm font-bold shadow-xl border z-[100] transition-all duration-300 opacity-0 translate-y-4 flex items-center gap-3 whitespace-nowrap ${bgClass}`;
-            toast.innerHTML = `${iconHtml} <span>${msg}</span>`;
-            
-            document.body.appendChild(toast);
-            requestAnimationFrame(() => toast.classList.remove('opacity-0', 'translate-y-4'));
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-4');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        function showConfirm(title, desc, callback) {
-            document.getElementById('confirm-title').innerText = title;
-            document.getElementById('confirm-desc').innerText = desc;
-            confirmAction = callback;
-            document.getElementById('modal-confirm').classList.remove('hidden');
-        }
-
-        document.getElementById('item-image-file').addEventListener('change', (e) => {
-            const display = document.getElementById('file-name-display');
-            if(e.target.files && e.target.files.length > 0) {
-                display.innerText = e.target.files[0].name;
-                display.classList.add('text-indigo-600');
-            } else {
-                display.innerText = '선택된 파일 없음';
-                display.classList.remove('text-indigo-600');
-            }
-        });
-
-        function isValidWeather(text) {
-            if (!text || text.trim().length < 2) return false;
-            const validKeywords = [
-                '맑음', '맑은', '구름', '흐림', '흐린', '해', '햇빛',
-                '비', '눈', '안개', '우박', '소나기', '호우', '강수',
-                '바람', '강풍', '폭염', '한파', '태풍', '더운', '추운', 
-                '쌀쌀', '선선', '따뜻', '습', '축축', '서늘', '영하', '영상', 
-                '도', '기온', '체감', '날씨', '건조', '추워', '더워'
-            ];
-            const invalidKeywords = ['우주', '멸망', '폭발', '외계', '마법', '귀신', '괴물', '좀비', '핵'];
-            if(invalidKeywords.some(kw => text.includes(kw))) return false;
-            return validKeywords.some(kw => text.includes(kw));
-        }
-
-        function getDetailedLaundryGuide(category, itemName) {
-            const lower = (itemName || '').toLowerCase();
-            if (lower.includes('니트') || lower.includes('가디건') || lower.includes('조끼') || category === '아우터') {
-                return "[온도] 찬물 또는 30℃ 이하의 미지근한 물\n[세제] 울샴푸 (중성세제)\n[특징 및 팁] 비틀어 짜지 말고 타월로 감싸 물기를 제거한 뒤 뉘어서 그늘에 건조하세요. (권장 세탁 주기: 4~5회 착용 후)";
-            } else if (lower.includes('청바지') || lower.includes('데님')) {
-                return "[온도] 30℃ 이하의 찬물 (단독 세탁 권장)\n[세제] 중성세제 (표백제 절대 금지)\n[특징 및 팁] 청바지는 뒤집어서 10회 착용 후 세탁하는 것이 변형과 탈색을 막습니다.";
-            } else if (category === '신발') {
-                return "[온도] 미지근한 물\n[세제] 중성세제와 부드러운 솔\n[특징 및 팁] 깔창을 분리하여 그늘진 곳에 건조하고 직사광선을 피하세요. (권장 세탁 주기: 오염 발생 시)";
-            } else if (category === '하의') {
-                return "[온도] 30℃ 이하 표준 물세탁\n[세제] 일반 세제 또는 중성세제\n[특징 및 팁] 주머니 속 이물질을 비우고 지퍼를 채운 뒤 뒤집어 세탁하세요. (권장 세탁 주기: 3~4회 착용 후)";
-            } else {
-                return "[온도] 30~40℃ 이하의 물 사용\n[세제] 일반 세탁세제 또는 산소표백제\n[특징 및 팁] 색상별로 분리하여 표준 코스로 세탁합니다. (권장 세탁 주기: 매번 착용 후)";
-            }
-        }
-
-        async function analyzeAndValidateClothing(rawName, manualCat, imageBase64) {
-            let category = manualCat;
-            let itemName = rawName ? rawName.trim() : "";
-            let image = imageBase64;
-
-            if (apiKey && imageBase64) {
-                try {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-                    let contents = [{ role: "user", parts: [{ text: `너는 10년 차 패션 전문가야. 제공된 이미지를 분석해.
-                    1. 카테고리는 반드시 ['상의', '하의', '아우터', '원피스', '신발'] 중 하나로 분류해.
-                    2. 옷 이름(name)을 정밀하게 분석해 적어.
-                    순수 JSON으로만 응답해:
-                    { "valid": true, "category": "...", "name": "..." }` }] }];
-                    
-                    const base64Data = imageBase64.split(',')[1];
-                    const mimeType = imageBase64.split(';')[0].split(':')[1];
-                    contents[0].parts.unshift({ inline_data: { mime_type: mimeType, data: base64Data } });
-
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: contents })
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        const text = data.candidates[0].content.parts[0].text;
-                        const jsonMatch = text.match(/\{[\s\S]*\}/);
-                        if (jsonMatch) {
-                            const parsed = JSON.parse(jsonMatch[0]);
-                            if (!category) category = parsed.category || "상의";
-                            if (!itemName) itemName = parsed.name || "스마트 분석 의류";
-                        }
-                    }
-                } catch (e) {
-                    console.warn("API fallback triggered.");
-                }
-            }
-
-            if (!category) {
-                const lower = itemName.toLowerCase();
-                if (lower.includes('바지') || lower.includes('팬츠') || lower.includes('청바지') || lower.includes('슬랙스') || lower.includes('스커트') || lower.includes('치마')) {
-                    category = "하의";
-                } else if (lower.includes('자켓') || lower.includes('코트') || lower.includes('패딩') || lower.includes('점퍼') || lower.includes('가디건') || lower.includes('조끼')) {
-                    category = "아우터";
-                } else if (lower.includes('신발') || lower.includes('운동화') || lower.includes('스니커즈') || lower.includes('구두') || lower.includes('부츠')) {
-                    category = "신발";
-                } else if (lower.includes('원피스') || lower.includes('드레스') || lower.includes('정장')) {
-                    category = "원피스";
-                } else {
-                    category = "상의";
-                }
-            }
-
-            if (!itemName) {
-                itemName = image ? "스마트 업로드 패션" : "데일리 베이직 아이템";
-            }
-
-            return {
-                valid: true,
-                category: category,
-                name: itemName,
-                laundryGuide: getDetailedLaundryGuide(category, itemName)
-            };
-        }
-
-        // 철저하게 고정된 일관성 있는 느좋 패션 평가 로직 (랜덤 방지)
-        function generateFixedRateResult(selectedMap) {
-            let topName = selectedMap['상의'] || selectedMap['원피스'] || '상의';
-            let bottomName = selectedMap['하의'] || '하의';
-            
-            // 이름들의 글자 길이와 코드 조합으로 고정된 점수 산출 (항상 동일한 조합은 동일 점수)
-            let hash = (topName + bottomName).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            let fitScore = 88 + (hash % 10); // 88~97점 고정
-            let colorScore = 85 + ((hash * 3) % 13); // 85~97점 고정
-            let trendScore = 90 + ((hash * 7) % 9); // 90~98점 고정
-            let totalScore = Math.floor((fitScore + colorScore + trendScore) / 3);
-
-            return `
-                <div class="flex items-center justify-between pb-4 border-b border-pink-100">
-                    <div>
-                        <span class="font-extrabold text-slate-800 text-lg block">⭐ 느좋 종합 점수</span>
-                        <span class="text-xs text-slate-400 font-medium">${topName} & ${bottomName} 조합 분석</span>
-                    </div>
-                    <span class="text-3xl font-black text-pink-500 bg-pink-50 px-4 py-2 rounded-2xl border border-pink-100">${totalScore}<span class="text-base font-bold text-pink-300">점</span></span>
-                </div>
-                <div class="space-y-3 pt-3">
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                        <p class="font-bold text-slate-800 text-sm mb-1.5 flex justify-between items-center">
-                            <span><i class="fa-solid fa-ruler-combined text-slate-400 mr-1"></i> 핏 (Fit)</span>
-                            <span class="text-pink-500 font-extrabold bg-white px-2 py-0.5 rounded-lg border border-slate-200">${fitScore}점</span>
-                        </p>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">선택하신 '${topName}'과 '${bottomName}'의 실루엣 기장감이 균형 잡힌 비율을 보여줍니다.</p>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                        <p class="font-bold text-slate-800 text-sm mb-1.5 flex justify-between items-center">
-                            <span><i class="fa-solid fa-palette text-slate-400 mr-1"></i> 색 조합 (Color)</span>
-                            <span class="text-pink-500 font-extrabold bg-white px-2 py-0.5 rounded-lg border border-slate-200">${colorScore}점</span>
-                        </p>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">톤온톤 연결감이 우수하며 자연스러운 포인트 컬러 매칭으로 세련된 무드를 완성합니다.</p>
-                    </div>
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                        <p class="font-bold text-slate-800 text-sm mb-1.5 flex justify-between items-center">
-                            <span><i class="fa-solid fa-fire text-slate-400 mr-1"></i> 트렌드 감도 (Trend)</span>
-                            <span class="text-pink-500 font-extrabold bg-white px-2 py-0.5 rounded-lg border border-slate-200">${trendScore}점</span>
-                        </p>
-                        <p class="text-xs text-slate-600 leading-relaxed font-medium">현재 스트릿 및 데일리 룩 트렌드 감도에 완벽히 부합하는 훌륭한 스타일링입니다.</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function generateDynamicRecResult(payload) {
-            const closet = payload.closet;
-            const top = closet.find(i => i.category === '상의') || closet.find(i => i.category === '원피스') || { name: '베이직 셔츠' };
-            const bottom = closet.find(i => i.category === '하의') || { name: '와이드 팬츠' };
-            const outer = closet.find(i => i.category === '아우터');
-            const shoes = closet.find(i => i.category === '신발');
-
-            let outerHtml = outer ? `<br><span class="text-amber-600 font-extrabold mt-1 inline-block">아우터: ${outer.name}</span>` : '';
-            let shoesHtml = shoes ? `<br><span class="text-orange-600 font-extrabold mt-1 inline-block">신발: ${shoes.name}</span>` : '';
-
-            return `
-                <div class="space-y-4">
-                    <div class="bg-indigo-50/80 p-4 rounded-2xl border border-indigo-100">
-                        <p class="font-extrabold text-indigo-900 text-sm mb-1.5 flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> 분석 상황: ${payload.occasion} (${payload.weather})</p>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden">
-                            <p class="font-extrabold text-slate-800 text-sm mb-2 relative z-10 leading-relaxed">
-                                상의: <span class="text-blue-600">${top.name}</span><br>
-                                하의: <span class="text-emerald-600">${bottom.name}</span>
-                                ${outerHtml}
-                                ${shoesHtml}
-                            </p>
-                            <div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5 relative z-10">
-                                <p class="text-xs text-slate-600 font-medium">✔️ '${payload.weather}' 날씨 변화를 고려한 최적의 보온 및 통기성 매칭</p>
-                                <p class="text-xs text-slate-600 font-medium">✔️ '${payload.occasion}' 장소의 분위기와 활동성에 알맞은 센스 있는 룩 연출</p>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-4 rounded-2xl text-white text-xs font-bold shadow-lg mt-2 text-center">
-                            <span class="text-pink-300">VIBE:</span> ${payload.occasion}에 가장 주목받는 센스 만점 스타일링 🎧✨
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (currentUser) {
-                showMainScreen();
-            } else {
-                showAuthScreen();
-            }
-
-            document.getElementById('nickname-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const input = document.getElementById('nickname-input');
-                const keyInput = document.getElementById('api-key-input');
-                if (input.value.trim()) {
-                    currentUser = input.value.trim();
-                    apiKey = keyInput.value.trim();
-                    localStorage.setItem('closet_nickname', currentUser);
-                    if(apiKey) localStorage.setItem('closet_api_key', apiKey);
-                    showMainScreen();
-                    showMessage(`반갑습니다, ${currentUser}님! 스마트 옷장이 열렸습니다.`, 'success');
-                }
-            });
-
-            document.getElementById('btn-logout').addEventListener('click', () => {
-                showConfirm('옷장을 닫으시겠습니까?', '데이터는 기기에 안전하게 보관됩니다.', () => {
-                    localStorage.removeItem('closet_nickname');
-                    localStorage.removeItem('closet_api_key');
-                    currentUser = null;
-                    apiKey = null;
-                    showAuthScreen();
-                });
-            });
-            
-            document.getElementById('btn-confirm-cancel').addEventListener('click', () => {
-                document.getElementById('modal-confirm').classList.add('hidden');
-                confirmAction = null;
-            });
-            document.getElementById('btn-confirm-ok').addEventListener('click', () => {
-                document.getElementById('modal-confirm').classList.add('hidden');
-                if(confirmAction) confirmAction();
-                confirmAction = null;
-            });
-
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    document.querySelectorAll('.nav-tab').forEach(t => {
-                        t.classList.remove('text-indigo-600');
-                        t.classList.add('text-slate-400', 'hover:text-slate-600');
-                        t.querySelector('.nav-indicator').classList.remove('bg-indigo-50');
-                    });
-                    const currentBtn = e.currentTarget;
-                    currentBtn.classList.remove('text-slate-400', 'hover:text-slate-600');
-                    currentBtn.classList.add('text-indigo-600');
-                    currentBtn.querySelector('.nav-indicator').classList.add('bg-indigo-50');
-                    
-                    const targetId = currentBtn.getAttribute('data-target');
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-                    document.getElementById(targetId).classList.remove('hidden');
-                    
-                    if(targetId === 'view-closet') renderCloset();
-                    if(targetId === 'view-rate') renderRateList();
-                });
-            });
-
-            document.getElementById('btn-add').addEventListener('click', () => document.getElementById('modal-add').classList.remove('hidden'));
-            document.getElementById('btn-close-add').addEventListener('click', () => {
-                document.getElementById('modal-add').classList.add('hidden');
-                document.getElementById('add-item-form').reset();
-                document.getElementById('file-name-display').innerText = '선택된 파일 없음';
-                document.getElementById('file-name-display').classList.remove('text-indigo-600');
-            });
-            document.getElementById('btn-close-detail').addEventListener('click', () => document.getElementById('modal-detail').classList.add('hidden'));
-
-            document.getElementById('add-item-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const manualName = document.getElementById('item-name-input').value.trim();
-                const manualCategory = document.getElementById('item-category-select').value;
-                const imageFileInput = document.getElementById('item-image-file');
-                const hasImage = imageFileInput.files && imageFileInput.files[0];
-
-                if (!manualName && !manualCategory && !hasImage) {
-                    return showMessage("의류 이름, 카테고리 또는 사진 중 하나 이상을 입력해주세요.", 'error');
-                }
-
-                const submitBtn = document.getElementById('btn-submit-add');
-                const originalHtml = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> 의류 등록 및 분석 중...';
-                submitBtn.disabled = true;
-
-                try {
-                    let imageBase64 = null;
-                    if (hasImage) {
-                        const file = imageFileInput.files[0];
-                        imageBase64 = await new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onload = (e) => resolve(e.target.result);
-                            reader.readAsDataURL(file);
-                        });
-                    }
-
-                    const analysis = await analyzeAndValidateClothing(manualName, manualCategory, imageBase64);
-
-                    const newItem = {
-                        id: Date.now().toString(),
-                        name: analysis.name,
-                        category: analysis.category,
-                        image: imageBase64,
-                        laundryGuide: analysis.laundryGuide,
-                        isFavorite: false
-                    };
-                    
-                    clothingItems.unshift(newItem);
-                    localStorage.setItem('closet_items', JSON.stringify(clothingItems));
-                    
-                    showMessage(`[${analysis.category}] ${analysis.name} 등록 완료!`, 'success');
-                    renderCloset();
-                    document.getElementById('btn-close-add').click();
-                } catch (error) {
-                    showMessage('등록 중 오류가 발생했습니다.', 'error');
-                } finally {
-                    submitBtn.innerHTML = originalHtml;
-                    submitBtn.disabled = false;
-                }
-            });
-
-            document.getElementById('btn-get-rate').addEventListener('click', () => {
-                const checkedRadios = document.querySelectorAll('.rate-item-radio:checked');
-                let selectedClothesMap = {};
-                let hasTop = false;
-                let hasBottom = false;
-
-                checkedRadios.forEach(radio => {
-                    const cat = radio.getAttribute('data-category');
-                    const itemName = radio.value;
-                    if(itemName && itemName.trim() !== '') {
-                        selectedClothesMap[cat] = itemName;
-                        if (cat === '상의' || cat === '원피스') hasTop = true;
-                        if (cat === '하의') hasBottom = true;
-                    }
-                });
-
-                if (!hasTop || !hasBottom) {
-                    return showMessage("상의와 하의를 모두 1개씩 선택해야 평가가 가능합니다!", "error");
-                }
-
-                try {
-                    const ratingHtml = generateFixedRateResult(selectedClothesMap);
-                    document.getElementById('rate-result').innerHTML = ratingHtml;
-                    document.getElementById('rate-result-container').classList.remove('hidden');
-                    
-                    document.getElementById('btn-share-coord').onclick = () => {
-                        const clothesTextList = Object.entries(selectedClothesMap).map(([c, n]) => `[${c}] ${n}`).join('\n');
-                        const shareText = `🖤 나의 느좋 패션 테스트 결과 🖤\n\n[선택한 아이템]\n${clothesTextList}\n\n✨ 완벽한 핏과 톤온톤으로 AI 분석을 통과한 오늘의 코디!`;
-                        
-                        const textArea = document.createElement("textarea");
-                        textArea.value = shareText;
-                        textArea.style.position = "fixed";
-                        textArea.style.top = "0";
-                        textArea.style.left = "0";
-                        textArea.style.opacity = "0";
-                        document.body.appendChild(textArea);
-                        textArea.focus();
-                        textArea.select();
-                        
-                        try {
-                            const successful = document.execCommand('copy');
-                            if (successful) showMessage('내 코디 결과가 복사되었습니다! SNS에 자랑해보세요.', 'success');
-                            else showMessage('복사에 실패했습니다.', 'error');
-                        } catch (err) {
-                            showMessage('브라우저 복사 기능을 지원하지 않습니다.', 'error');
-                        }
-                        document.body.removeChild(textArea);
-                    };
-                } catch(e) {
-                    showMessage("분석 중 오류가 발생했습니다.", "error");
-                }
-            });
-
-            document.getElementById('btn-get-rec').addEventListener('click', () => {
-                const weather = document.getElementById('rec-weather').value.trim();
-                const occasion = document.getElementById('rec-occasion').value.trim();
-                
-                if (!weather || !occasion) {
-                    return showMessage('날씨와 약속을 모두 입력해주세요!', 'error');
-                }
-
-                if (!isValidWeather(weather)) {
-                    return showMessage('유효하지 않은 날씨입니다. (예: 맑음, 비, 폭염, 쌀쌀 등)', 'error');
-                }
-
-                if (clothingItems.length < 2) {
-                    return showMessage('다양한 맞춤 추천을 위해 옷장에 옷을 2개 이상 등록해주세요.', 'error');
-                }
-
-                try {
-                    const recHtml = generateDynamicRecResult({ weather, occasion, closet: clothingItems });
-                    document.getElementById('rec-result').innerHTML = recHtml;
-                    document.getElementById('rec-result-container').classList.remove('hidden');
-                } catch(e) {
-                    showMessage("추천 중 오류가 발생했습니다.", "error");
-                }
-            });
-        });
-
-        function showAuthScreen() {
-            document.getElementById('auth-screen').classList.remove('hidden');
-            document.getElementById('main-screen').classList.add('hidden');
-            document.getElementById('main-screen').classList.remove('flex');
-        }
-
-        function showMainScreen() {
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('main-screen').classList.remove('hidden');
-            document.getElementById('main-screen').classList.add('flex');
-            document.getElementById('user-title').innerText = `${currentUser}님의 옷장`;
-            renderCloset();
-        }
-
-        function getCategoryDetails(category) {
-            const map = {
-                '상의': { emoji: '👕', label: '상의', color: 'text-sky-600 bg-sky-50', bg: 'bg-sky-100' },
-                '하의': { emoji: '👖', label: '하의', color: 'text-blue-600 bg-blue-50', bg: 'bg-blue-100' },
-                '아우터': { emoji: '🧥', label: '아우터', color: 'text-amber-600 bg-amber-50', bg: 'bg-amber-100' },
-                '원피스': { emoji: '👗', label: '원피스/기타', color: 'text-fuchsia-600 bg-fuchsia-50', bg: 'bg-fuchsia-100' },
-                '신발': { emoji: '👟', label: '신발', color: 'text-orange-600 bg-orange-50', bg: 'bg-orange-100' }
-            };
-            return map[category] || map['상의'];
-        }
-
-        function renderCloset() {
-            const container = document.getElementById('closet-category-sections');
-            document.getElementById('item-count').innerText = clothingItems.length;
-            container.innerHTML = '';
-            
-            if(clothingItems.length === 0) {
-                container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-24 text-slate-400 bg-white rounded-[2rem] border border-slate-100 shadow-sm mt-4">
-                        <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-5 text-6xl shadow-inner">🧦</div>
-                        <p class="font-extrabold text-slate-600 text-lg">옷장이 텅 비었어요.</p>
-                        <p class="text-xs mt-2 font-medium text-slate-400">+ 버튼을 눌러 내 옷을 등록해보세요!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const categories = ['상의', '하의', '아우터', '원피스', '신발'];
-            
-            categories.forEach(cat => {
-                const itemsInCat = clothingItems.filter(i => i.category === cat);
-                if(itemsInCat.length > 0) {
-                    const details = getCategoryDetails(cat);
-                    const section = document.createElement('div');
-                    section.className = 'space-y-4';
-                    
-                    section.innerHTML = `
-                        <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-2xl">${details.emoji}</span>
-                                <h3 class="font-extrabold text-slate-800 text-lg">${cat}</h3>
-                            </div>
-                            <span class="text-[11px] font-extrabold ${details.color} px-2.5 py-1 rounded-lg">${itemsInCat.length} Items</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4" id="cat-grid-${cat}"></div>
-                    `;
-                    container.appendChild(section);
-                    
-                    const grid = section.querySelector(`#cat-grid-${cat}`);
-                    itemsInCat.forEach(item => {
-                        const isFav = item.isFavorite;
-                        const card = document.createElement('div');
-                        card.className = 'bg-white rounded-[1.5rem] shadow-sm border border-slate-100 overflow-hidden relative group cursor-pointer hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1';
-                        card.onclick = () => showDetail(item.id);
-                        
-                        let visualHtml = `<div class="absolute inset-0 flex flex-col items-center justify-center drop-shadow-sm transform group-hover:scale-105 transition duration-500 bg-slate-50"><span class="text-[6.5rem] mb-2 leading-none">${details.emoji}</span></div>`;
-                        if (item.image) {
-                            visualHtml = `<img src="${item.image}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500" alt="${item.name}">`;
-                        }
-
-                        card.innerHTML = `
-                            <div class="w-full pt-[100%] relative border-b border-slate-50 overflow-hidden bg-slate-100">
-                                <button class="absolute top-3 right-3 text-2xl z-10 transition transform active:scale-90 hover:scale-110 drop-shadow-lg ${isFav ? 'text-pink-500' : 'text-white/90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] hover:text-pink-300'}" 
-                                        onclick="event.stopPropagation(); toggleFavorite('${item.id}')">
-                                    <i class="fa-solid fa-heart"></i>
-                                </button>
-                                ${visualHtml}
-                            </div>
-                            <div class="p-4 bg-white flex flex-col gap-1 flex-1 justify-center relative">
-                                <h4 class="font-extrabold text-sm text-slate-800 line-clamp-2 leading-relaxed break-keep">${item.name}</h4>
-                            </div>
-                        `;
-                        grid.appendChild(card);
-                    });
-                }
-            });
-        }
-
-        window.toggleFavorite = function(id) {
-            const item = clothingItems.find(i => i.id === id);
-            if(item) {
-                item.isFavorite = !item.isFavorite;
-                localStorage.setItem('closet_items', JSON.stringify(clothingItems));
-                renderCloset();
-            }
-        }
-
-        window.showDetail = function(id) {
-            const item = clothingItems.find(i => i.id === id);
-            if(!item) return;
-            const details = getCategoryDetails(item.category);
-            
-            let visualHtml = `<div class="w-28 h-28 rounded-[1.2rem] flex items-center justify-center text-7xl shadow-inner border-2 border-white ${details.bg}">${details.emoji}</div>`;
-            if (item.image) {
-                visualHtml = `<div class="w-28 h-28 rounded-[1.2rem] overflow-hidden shadow-inner border-2 border-white bg-slate-100 flex-shrink-0"><img src="${item.image}" class="w-full h-full object-cover"></div>`;
-            }
-
-            document.getElementById('detail-content').innerHTML = `
-                <div class="flex items-center gap-5 mb-6 bg-slate-50 p-4 rounded-3xl border border-slate-100">
-                    ${visualHtml}
-                    <div class="flex-1">
-                        <span class="text-xs font-extrabold px-3 py-1 rounded-md inline-block mb-2 shadow-sm ${details.color}">${item.category}</span>
-                        <h3 class="text-lg font-black text-slate-800 leading-tight break-keep">${item.name}</h3>
-                    </div>
-                </div>
-                
-                <div class="bg-blue-50/50 p-5 rounded-3xl border border-blue-100 mb-6 shadow-sm max-h-60 overflow-y-auto hide-scrollbar">
-                    <h4 class="font-black text-blue-900 mb-3 flex items-center gap-2 text-sm sticky top-0 bg-blue-50/90 py-2 backdrop-blur-sm">
-                        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm shadow-sm"><i class="fa-solid fa-hands-bubbles"></i></div>
-                        전문가 세탁 및 보관 가이드
-                    </h4>
-                    <div class="text-[13px] text-blue-900/80 font-bold whitespace-pre-wrap leading-loose">${item.laundryGuide || "관리 정보가 없습니다."}</div>
-                </div>
-                
-                <button onclick="deleteItem('${item.id}')" class="w-full bg-white text-red-500 font-bold py-4 rounded-2xl hover:bg-red-50 transition border border-red-100 flex items-center justify-center gap-2 shadow-sm text-base">
-                    <i class="fa-solid fa-trash-can"></i> 이 의류 삭제하기
-                </button>
-            `;
-            document.getElementById('modal-detail').classList.remove('hidden');
-        }
-
-        window.deleteItem = function(id) {
-            showConfirm("이 의류를 삭제하시겠습니까?", "옷장에서 완전히 제거됩니다.", () => {
-                clothingItems = clothingItems.filter(i => i.id !== id);
-                localStorage.setItem('closet_items', JSON.stringify(clothingItems));
-                document.getElementById('modal-detail').classList.add('hidden');
-                showMessage('의류가 정상적으로 삭제되었습니다.', 'success');
-                renderCloset();
-            });
-        }
-
-        function renderRateList() {
-            const container = document.getElementById('rate-item-list');
-            container.innerHTML = '';
-            
-            if(clothingItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-slate-400 text-sm py-12 text-center bg-white rounded-3xl border border-slate-100 shadow-sm font-medium">
-                        <i class="fa-solid fa-shirt text-4xl mb-4 text-slate-200"></i><br>
-                        코디 평가를 위해<br>옷장에 옷을 먼저 등록해주세요.
-                    </div>`;
-                return;
-            }
-            
-            const categories = ['상의', '하의', '아우터', '원피스', '신발'];
-            
-            categories.forEach(cat => {
-                const itemsInCat = clothingItems.filter(i => i.category === cat);
-                if (itemsInCat.length > 0) {
-                    const section = document.createElement('div');
-                    section.className = 'space-y-3 mb-6';
-                    
-                    const details = getCategoryDetails(cat);
-                    const isRequired = (cat === '상의' || cat === '하의') ? '<span class="text-[10px] bg-pink-100 text-pink-600 px-1.5 py-0.5 rounded font-bold ml-1">필수</span>' : '';
-                    
-                    section.innerHTML = `<h4 class="text-sm font-black text-slate-800 px-1 flex items-center gap-1.5"><span class="text-xl">${details.emoji}</span> ${cat} ${isRequired} <span class="text-[10px] text-slate-400 font-medium ml-auto">(최대 1개)</span></h4>`;
-                    
-                    const listWrapper = document.createElement('div');
-                    listWrapper.className = 'space-y-2.5';
-                    
-                    const noneLabel = document.createElement('label');
-                    noneLabel.className = 'flex items-center gap-3 p-3.5 border border-dashed border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-50 transition bg-white text-xs text-slate-400 font-bold';
-                    noneLabel.innerHTML = `
-                        <input type="radio" name="rate-cat-${cat}" class="rate-item-radio text-indigo-600 focus:ring-indigo-500 w-5 h-5" data-category="${cat}" value="" checked>
-                        <span>선택 안 함</span>
-                    `;
-                    listWrapper.appendChild(noneLabel);
-
-                    itemsInCat.forEach(item => {
-                        let thumbHtml = `<div class="w-12 h-12 rounded-xl flex items-center justify-center text-3xl shadow-inner border border-white flex-shrink-0 ${details.bg}">${details.emoji}</div>`;
-                        if (item.image) {
-                            thumbHtml = `<div class="w-12 h-12 rounded-xl overflow-hidden shadow-inner border border-white flex-shrink-0"><img src="${item.image}" class="w-full h-full object-cover"></div>`;
-                        }
-
-                        const label = document.createElement('label');
-                        label.className = 'flex items-center gap-3 p-3.5 border border-slate-100 rounded-2xl cursor-pointer hover:bg-slate-50 hover:border-indigo-200 transition bg-white shadow-sm font-bold group';
-                        label.innerHTML = `
-                            <input type="radio" name="rate-cat-${cat}" class="rate-item-radio w-5 h-5 text-indigo-600 focus:ring-indigo-500" data-category="${item.category}" value="${item.name}">
-                            ${thumbHtml}
-                            <div class="flex flex-col overflow-hidden">
-                                <span class="text-[13px] text-slate-700 truncate group-hover:text-indigo-700 transition-colors">${item.name}</span>
-                            </div>
-                        `;
-                        listWrapper.appendChild(label);
-                    });
-                    
-                    section.appendChild(listWrapper);
-                    container.appendChild(section);
-                }
-            });
-            
-            document.getElementById('rate-result-container').classList.add('hidden');
-            document.getElementById('rate-result').innerHTML = '';
-        }
-    </script>
+    <script defer src="./js/state.js"></script>
+    <script defer src="./js/ui.js"></script>
+    <script defer src="./js/clothing-service.js"></script>
+    <script defer src="./js/recommendation-service.js"></script>
+    <script defer src="./js/closet-view.js"></script>
+    <script defer src="./js/app.js"></script>
 </body>
+
 </html>
